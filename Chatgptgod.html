@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reto 365 días con Chris</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+            background: transparent;
+            color: inherit;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        h1 {
+            margin-bottom: 30px;
+            font-size: 1.8rem;
+            color: white; /* Cambiado a blanco */
+        }
+        .counter-box {
+            background: rgba(46, 170, 220, 0.15);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 20px 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        .counter-value {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin: 15px 0;
+            color: #2eaadc;
+        }
+        .counter-label {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+        .date-info {
+            font-size: 1.1rem;
+            margin: 15px 0;
+            padding: 10px;
+            background: rgba(0,0,0,0.03);
+            border-radius: 8px;
+        }
+        .config-info {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 30px;
+        }
+        .dark-mode body {
+            background: transparent !important;
+        }
+        .dark-mode h1 {
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Reto 365 días con Chris 🗣</h1>
+        
+        <div class="counter-box">
+            <div class="counter-label">DÍA ACTUAL</div>
+            <div class="counter-value" id="dayCount">0</div>
+        </div>
+        
+        <div class="counter-box">
+            <div class="counter-label">DÍAS RESTANTES</div>
+            <div class="counter-value" id="daysLeft">365</div>
+        </div>
+        
+        <div class="date-info">
+            <div>Fecha de inicio: <span id="startDate"></span></div>
+            <div>Fecha de finalización: <span id="endDate"></span></div>
+        </div>
+        
+        <div class="config-info">
+            <strong>Nota:</strong> Para cambiar la fecha, edita el valor en el código (línea 114)
+        </div>
+    </div>
+
+    <script>
+        const dayCountEl = document.getElementById('dayCount');
+        const daysLeftEl = document.getElementById('daysLeft');
+        const startDateEl = document.getElementById('startDate');
+        const endDateEl = document.getElementById('endDate');
+        
+        const startDate = new Date('2025-08-12');  // FECHA DE INICIO
+        const CHALLENGE_DAYS = 365;
+        
+        function formatDate(date) {
+            return date.toLocaleDateString('es-ES', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+        
+        function updateChallenge() {
+            const today = new Date();
+            const endDate = new Date(startDate);
+            endDate.setDate(startDate.getDate() + CHALLENGE_DAYS);
+            
+            const diffTime = today - startDate;
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            
+            const currentDay = Math.max(1, Math.min(diffDays + 1, CHALLENGE_DAYS));
+            const daysRemaining = Math.max(0, CHALLENGE_DAYS - diffDays - 1);
+            
+            dayCountEl.textContent = currentDay;
+            daysLeftEl.textContent = daysRemaining;
+            startDateEl.textContent = formatDate(startDate);
+            endDateEl.textContent = formatDate(endDate);
+        }
+        
+        function init() {
+            if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                document.documentElement.classList.add('dark-mode');
+            }
+            updateChallenge();
+            setInterval(updateChallenge, 3600000);
+        }
+        
+        init();
+    </script>
+</body>
+</html>
